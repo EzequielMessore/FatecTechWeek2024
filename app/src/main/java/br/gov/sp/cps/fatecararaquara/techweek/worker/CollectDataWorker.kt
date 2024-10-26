@@ -1,11 +1,11 @@
 package br.gov.sp.cps.fatecararaquara.techweek.worker
 
-import FirebaseRepository
 import android.content.Context
 import android.util.Log
 import androidx.work.Data
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import br.gov.sp.cps.fatecararaquara.techweek.data.repository.FirebaseRepository
 import br.gov.sp.cps.fatecararaquara.techweek.worker.provider.BatteryInfoProvider
 import br.gov.sp.cps.fatecararaquara.techweek.worker.provider.DeviceInfoProvider
 import br.gov.sp.cps.fatecararaquara.techweek.worker.provider.LocaleInfoProvider
@@ -18,22 +18,24 @@ import br.gov.sp.cps.fatecararaquara.techweek.worker.provider.TimeZoneInfoProvid
 class CollectDataWorker(context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
 
+    companion object {
+        private const val TAG = "CollectDataWorker"
+    }
+
     override fun doWork(): Result {
         return try {
             val context = applicationContext
             val consolidatedData = Data.Builder()
 
-            // Função auxiliar para coletar dados com segurança
             fun safeCollect(provider: () -> Data): Data {
                 return try {
                     provider()
                 } catch (e: Exception) {
-                    Log.e("DataCollection", "Error in provider: ${provider::class.simpleName}", e)
+                    Log.e(TAG, "Erro na coleta de dados do ${provider::class.simpleName}", e)
                     Data.EMPTY
                 }
             }
 
-            // Coleta segura dos dados de cada Provider
             consolidatedData.putAll(safeCollect { DeviceInfoProvider().provide() })
             consolidatedData.putAll(safeCollect { SystemInfoProvider(context).provide() })
             consolidatedData.putAll(safeCollect { BatteryInfoProvider(context).provide() })
@@ -45,17 +47,13 @@ class CollectDataWorker(context: Context, workerParams: WorkerParameters) :
 
             val data = consolidatedData.build()
 
-            // Log de dados para debug
-            data.keyValueMap.forEach { (key, value) ->
-                Log.d("DataCollection", "Key: $key, Value: $value")
-            }
+            data.keyValueMap.forEach { (key, value) -> Log.d(TAG, "$key: $value") }
 
-            // Enviar os dados consolidados para o Firebase
             FirebaseRepository(context).saveDataToFirebase(data.keyValueMap)
 
             Result.success()
         } catch (e: Exception) {
-            Log.e("DataCollection", "Error in ConsolidatedDataWorker", e)
+            Log.e(TAG, "Erro no processo de coleta de dados", e)
             Result.failure()
         }
     }

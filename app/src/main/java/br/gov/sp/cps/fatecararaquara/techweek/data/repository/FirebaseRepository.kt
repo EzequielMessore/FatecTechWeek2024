@@ -1,6 +1,9 @@
+package br.gov.sp.cps.fatecararaquara.techweek.data.repository
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.provider.Settings
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
@@ -9,34 +12,27 @@ import java.util.Locale
 
 class FirebaseRepository(private val context: Context) {
 
-    private val database = FirebaseDatabase.getInstance()
+    companion object {
+        private const val TAG = "FirebaseRepository"
+    }
 
-    // Obter o identificador único do usuário
+    private val database = FirebaseDatabase.getInstance().reference
+
     @SuppressLint("HardwareIds")
     private fun getUserId(): String {
         return FirebaseAuth.getInstance().currentUser?.uid
             ?: Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+            ?: "unknown_user"
     }
 
-    // Gerar identificador baseado no timestamp atual
-    private fun getTimestamp(): String {
-        val dateFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
-        return dateFormat.format(Date())
-    }
+    private fun getTimestamp(): String =
+        SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
 
-    // Enviar dados para o Firebase
     fun saveDataToFirebase(dataMap: Map<String, Any?>) {
-        val userId = getUserId()
-        val timestamp = getTimestamp()
-        val userRef = database.getReference("userData").child(userId).child(timestamp)
+        val userRef = database.child("userData").child(getUserId()).child(getTimestamp())
 
         userRef.setValue(dataMap)
-            .addOnSuccessListener {
-                // Sucesso ao salvar os dados
-            }
-            .addOnFailureListener { e ->
-                // Log da falha
-                e.printStackTrace()
-            }
+            .addOnSuccessListener { Log.d(TAG, "Dados enviados com sucesso ao Firebase.") }
+            .addOnFailureListener { e -> Log.e(TAG, "Erro no envio de dados ao Firebase", e) }
     }
 }
