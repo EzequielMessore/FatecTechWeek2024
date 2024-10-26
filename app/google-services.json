@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "111493480427",
+    "project_id": "semanatechfatec",
+    "storage_bucket": "semanatechfatec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111493480427:android:a9cb9df5760f8c435423ae",
+        "android_client_info": {
+          "package_name": "br.gov.sp.cps.fatecararaquara.techweek"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnrR4VMry5yAGHyniip2viRSVqQy0HYYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
