@@ -7,9 +7,10 @@ import java.util.Locale
 class LocaleInfoProvider(private val context: Context) {
 
     fun provide(): Data {
+        // TODO: Recuperar informações do dispositivo para as variáveis usando a classe Locale.
         val locale = Locale.getDefault()
-        val language = locale.language
-        val country = locale.country
+        val language = ""
+        val country = ""
 
         return Data.Builder()
             .putString("language", language)

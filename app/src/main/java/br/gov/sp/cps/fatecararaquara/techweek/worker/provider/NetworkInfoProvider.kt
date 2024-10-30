@@ -11,10 +11,11 @@ class NetworkInfoProvider(private val context: Context) {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
         val network = connectivityManager?.activeNetwork
         val capabilities = connectivityManager?.getNetworkCapabilities(network)
-        
-        val isConnected = capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
-        val isWifi = capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ?: false
-        val isMobile = capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ?: false
+
+        // TODO: Recuperar informações de rede para as variáveis isConnected, isWifi e isMobile.
+        val isConnected = false
+        val isWifi = false
+        val isMobile = false
 
         return Data.Builder()
             .putBoolean("isConnected", isConnected)

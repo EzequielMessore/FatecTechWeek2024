@@ -9,11 +9,10 @@ class BatteryInfoProvider(private val context: Context) {
 
     fun provide(): Data {
         val batteryStatus = context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-        val level = batteryStatus?.getIntExtra("level", -1) ?: -1
-        val scale = batteryStatus?.getIntExtra("scale", -1) ?: -1
-        val isCharging = batteryStatus?.getIntExtra("status", -1) == 2 // STATUS_CHARGING
 
-        val batteryLevel = if (scale > 0) (level * 100) / scale else -1
+        // TODO: Recuperar informações de bateria para as variáveis isCharging e batteryLevel.
+        val isCharging = false
+        val batteryLevel = 0
 
         return Data.Builder()
             .putInt("batteryLevel", batteryLevel)
