@@ -9,8 +9,8 @@ class LocaleInfoProvider(private val context: Context) {
     fun provide(): Data {
         // TODO: Recuperar informações do dispositivo para as variáveis usando a classe Locale.
         val locale = Locale.getDefault()
-        val language = ""
-        val country = ""
+        val language = locale.getLanguage()
+        val country = locale.getCountry()
 
         return Data.Builder()
             .putString("language", language)

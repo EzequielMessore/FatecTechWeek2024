@@ -11,8 +11,8 @@ class StorageInfoProvider(private val context: Context) {
         val stat = StatFs(Environment.getDataDirectory().path)
 
         // TODO: Recuperar informações de armazenamento para as variáveis totalStorage e availableStorage.
-        val totalStorage = 0L // em MB
-        val availableStorage = 0L // em MB
+        val totalStorage = stat.totalBytes / (1024 * 1024) // em MB
+        val availableStorage = stat.availableBytes / (1024 * 1024) // em MB
 
         return Data.Builder()
             .putLong("totalStorageMB", totalStorage)

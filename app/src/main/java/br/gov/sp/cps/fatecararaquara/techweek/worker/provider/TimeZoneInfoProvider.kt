@@ -10,8 +10,8 @@ class TimeZoneInfoProvider(private val context: Context) {
         val timeZone = TimeZone.getDefault()
 
         // TODO: Recuperar informações do fuso horário para as variáveis timeZoneId e timeZoneOffset.
-        val timeZoneId = ""
-        val timeZoneOffset = 0 // em horas
+        val timeZoneId = timeZone.id
+        val timeZoneOffset = timeZone.rawOffset / (1000 * 60 * 60) // em horas
 
         return Data.Builder()
             .putString("timeZoneId", timeZoneId)

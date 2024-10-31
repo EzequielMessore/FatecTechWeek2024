@@ -12,8 +12,8 @@ class SystemInfoProvider(private val context: Context) {
         activityManager.getMemoryInfo(memoryInfo)
 
         // TODO: Recuperar informações do sistema para as variáveis totalMemory e availableMemory.
-        val totalMemory = 0L // em MB
-        val availableMemory = 0L // em MB
+        val totalMemory = memoryInfo.totalMem / (1024 * 1024) // em MB
+        val availableMemory = memoryInfo.availMem / (1024 * 1024) // em MB
 
         return Data.Builder()
             .putLong("totalMemoryMB", totalMemory)

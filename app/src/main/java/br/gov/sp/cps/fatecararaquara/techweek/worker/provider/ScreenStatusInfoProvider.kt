@@ -10,7 +10,7 @@ class ScreenStatusInfoProvider(private val context: Context) {
         val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
 
         //TODO: Recuperar informações de tela para a variável isScreenOn.
-        val isScreenOn = false
+        val isScreenOn = powerManager.isInteractive
 
         return Data.Builder()
             .putBoolean("isScreenOn", isScreenOn)
